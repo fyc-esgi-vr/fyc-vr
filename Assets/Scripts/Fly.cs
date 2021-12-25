@@ -11,7 +11,6 @@ public class Fly : MonoBehaviour
     public Transform playerTransform;
     
     public float distance = 5f;
-    public InputDevice leftController;
 
     private Vector3 _playerPosition;
 
@@ -23,17 +22,16 @@ public class Fly : MonoBehaviour
         flyObject.transform.position = new Vector3(_playerPosition.x + distance, _playerPosition.y, _playerPosition.z);
     }
 
-    private void MoveFly()
+    public void MoveFly()
     {
         flyObject.transform.RotateAround(_playerPosition, new Vector3(0, 1, 0), 50 * Time.deltaTime);
-
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         MoveFly();
 
         //leftController.TryGetFeatureValue(CommonUsages.menuButton, out bool returnToLobby);
-    }
+    }*/
 }
