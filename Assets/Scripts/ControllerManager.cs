@@ -38,6 +38,6 @@ public class ControllerManager : MonoBehaviour
     private void Update()
     {
         _leftController.TryGetFeatureValue(CommonUsages.trigger, out float force);
-        if(force >= 0.5) fly.MoveFly();
+        if(force >= 0.5) fly.RotateFly();
     }
 }
