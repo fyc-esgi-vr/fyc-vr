@@ -7,13 +7,22 @@ public class XylophoneManager : MonoBehaviour
 {
     public GameObject projectile;
     public List<Transform> KeyTransforms;
-    
     private Transform _transform;
     private List<Vector3> positions;
 
+    public Key keys;
+ 
     private float _time = 0.0f;
+    private int _index = 0;
+    private bool _isValid = true;
     private void Start()
     {
+        if (keys.indexes.Count != keys.intervals.Count)
+        {
+            Debug.LogError("The numbers of keys and intervals are not equal");
+            _isValid = false;
+            return;
+        }
         positions = new List<Vector3>();
         foreach (var transform in KeyTransforms)
         {
@@ -23,38 +32,28 @@ public class XylophoneManager : MonoBehaviour
         }
     }
 
-    void PlayNote(int index, float zOffset = 0)
+    //do a map of keys to play with :
+    //lvalue = key to play
+    //rvalue = frequency value 
+    void PlayNote(int index, float zOffset = 0, float interval = 0.5f)
     {
+        //if(_time >= 0.5) 
         positions[index] = new Vector3(positions[index].x, positions[index].y, zOffset);
         Instantiate(projectile, positions[index], Quaternion.identity);
     }
 
+    //problems:
+    //1. on lui dit jamais quand s'arreter
+    //2. c'est le BORDELLE
     private void FixedUpdate()
     {
+        if (_index > keys.indexes.Count - 1) return;
+        if (!_isValid) return;
         _time += Time.deltaTime;
-        if (_time > 0.5 && _time < 0.52)
-        {
-            PlayNote(0);
-        }
-        if (_time > 0.9 && _time < 0.92)
-        {
-            PlayNote(1, 1.5f);
-        }
-        if (_time > 1.7 && _time < 1.72)
-        {
-            PlayNote(2,-1.5f);
-        }
-        if (_time > 2.7 && _time < 2.72)
-        {
-            PlayNote(5);
-        }
-        if (_time > 3.7 && _time < 3.72)
-        {
-            PlayNote(4, 1.5f);
-        }
-        if (_time > 4.7 && _time < 4.72)
-        {
-            PlayNote(4, -1.5f);
-        }
+
+        if (_time < keys.intervals[_index]) return;
+        PlayNote(keys.indexes[_index]);
+        _time = 0f;
+        _index++;
     }
 }
