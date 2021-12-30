@@ -13,7 +13,7 @@ public class XylophoneManager : MonoBehaviour
     public Key keys;
  
     private float _time = 0.0f;
-    private int _index = 0;
+    private int _index = 37;
     private bool _isValid = true;
     private void Start()
     {
