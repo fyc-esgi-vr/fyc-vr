@@ -32,19 +32,17 @@ public class XylophoneManager : MonoBehaviour
         }
     }
 
-    //do a map of keys to play with :
-    //lvalue = key to play
-    //rvalue = frequency value 
     void PlayNote(int index, float zOffset = 0, float interval = 0.5f)
     {
-        //if(_time >= 0.5) 
         positions[index] = new Vector3(positions[index].x, positions[index].y, zOffset);
         Instantiate(projectile, positions[index], Quaternion.identity);
     }
 
-    //problems:
-    //1. on lui dit jamais quand s'arreter
-    //2. c'est le BORDELLE
+    private void Update()
+    {
+        
+    }
+
     private void FixedUpdate()
     {
         if (_index > keys.indexes.Count - 1) return;
@@ -52,7 +50,7 @@ public class XylophoneManager : MonoBehaviour
         _time += Time.deltaTime;
 
         if (_time < keys.intervals[_index]) return;
-        PlayNote(keys.indexes[_index]);
+        PlayNote(keys.indexes[_index], UnityEngine.Random.Range(-2.0f, 2f));
         _time = 0f;
         _index++;
     }

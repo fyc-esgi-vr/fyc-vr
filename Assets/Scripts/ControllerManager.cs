@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.SceneManagement;
 using UnityEngine.XR;
 
 public class ControllerManager : MonoBehaviour
 {
     public InputDeviceCharacteristics  characteristic;
-    public Fly fly;
     private InputDevice _leftController;
     
     // Start is called before the first frame update
@@ -38,6 +38,6 @@ public class ControllerManager : MonoBehaviour
     private void Update()
     {
         _leftController.TryGetFeatureValue(CommonUsages.trigger, out float force);
-        if(force >= 0.5) fly.RotateFly();
+        if (force >= 0.5) SceneManager.LoadScene(0);
     }
 }
