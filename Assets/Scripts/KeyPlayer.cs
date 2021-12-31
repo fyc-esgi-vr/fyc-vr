@@ -9,7 +9,13 @@ public class KeyPlayer : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Projectile")) return;
         AudioSource.PlayClipAtPoint(audioClip,collision.contacts[0].point);
-        Destroy(collision.gameObject);
+        StartCoroutine(DestroyCoroutine(collision.gameObject));
+    }
+
+    IEnumerator DestroyCoroutine(GameObject obj)
+    {
+        yield return new WaitForSeconds(1.5f);
+        Destroy(obj);
     }
         
 }
