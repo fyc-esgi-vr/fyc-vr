@@ -7,6 +7,8 @@ public class FollowFly : MonoBehaviour
     public float realDimensionSize = 3;
     public float littleDimensionSize = 1;
 
+    public Material littleDimensionDefaultMat;
+    public Material littleDimensionDangerMat;
     public GameObject flySoundObject;
     //object to track
     public GameObject flyPrefab;
@@ -18,22 +20,20 @@ public class FollowFly : MonoBehaviour
     
     private bool _flyIsMoving;
     private float _proportion;
-    private Vector3 lastValidFlyPos;
-    void OnDrawGizmosSelected()
-    {
-        // Draw a semitransparent blue cube at the transforms position
-        Gizmos.color = new Color(1, 0, 0, 0.5f);
-        var centerLittleDimension = new Vector3(littleDimensionBotLeftBackPoint.x + littleDimensionSize / 2,
-            littleDimensionBotLeftBackPoint.y + littleDimensionSize / 2,
-            littleDimensionBotLeftBackPoint.z + littleDimensionSize / 2);
-        Gizmos.DrawCube(centerLittleDimension, new Vector3(littleDimensionSize, littleDimensionSize, littleDimensionSize));
-    }
-
+    private Vector3 _lastValidFlyPos;
+    private MeshRenderer _littleDimensionCubeMeshRenderer;
     private void Awake()
     {
+
         var centerLittleDimension = new Vector3(littleDimensionBotLeftBackPoint.x + littleDimensionSize / 2,
             littleDimensionBotLeftBackPoint.y + littleDimensionSize / 2,
             littleDimensionBotLeftBackPoint.z + littleDimensionSize / 2);
+        
+        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cube.transform.position = centerLittleDimension;
+        cube.transform.localScale = new Vector3(littleDimensionSize, littleDimensionSize, littleDimensionSize);
+        _littleDimensionCubeMeshRenderer = cube.GetComponent<MeshRenderer>();
+        _littleDimensionCubeMeshRenderer.material = littleDimensionDefaultMat;
         Mesh m = characterModelPrefab.GetComponent<MeshFilter>().sharedMesh;
         Bounds meshBounds = m.bounds;
         Vector3 meshSize = meshBounds.size;
@@ -78,9 +78,16 @@ public class FollowFly : MonoBehaviour
         //if (!_flyIsMoving) return;
         var flyPos = _fly.transform.position;
         if (VerifyFlyPosition(flyPos))
-            lastValidFlyPos = flyPos;
+        {
+            _lastValidFlyPos = flyPos;
+            _littleDimensionCubeMeshRenderer.material = littleDimensionDefaultMat;
+        }
         else
-            _fly.transform.position = lastValidFlyPos;
+        {
+            _fly.transform.position = _lastValidFlyPos;
+            _littleDimensionCubeMeshRenderer.material = littleDimensionDangerMat;
+            return;
+        }
         
         var difference = new Vector3(flyPos.x - littleDimensionBotLeftBackPoint.x,
             flyPos.y - littleDimensionBotLeftBackPoint.y, 
