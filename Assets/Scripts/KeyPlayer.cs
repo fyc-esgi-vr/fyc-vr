@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class KeyPlayer : MonoBehaviour
 {
+    [Tooltip("Audio that will be played when key is touched.")]
     public AudioClip audioClip;
+
+    [Tooltip("The amount of time the projectile will stay on the key after contact.")]
+    public float destroyDelay = 0.75f;
+    
+    //when something collides with the key, if it's a projectile play the sound at the point of impact and destroy it.
     void OnCollisionEnter(Collision collision)
     {
         if (!collision.gameObject.CompareTag("Projectile")) return;
@@ -14,7 +20,7 @@ public class KeyPlayer : MonoBehaviour
 
     IEnumerator DestroyCoroutine(GameObject obj)
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(destroyDelay);
         Destroy(obj);
     }
         

@@ -19,6 +19,7 @@ public class ControllerManager : MonoBehaviour
 
     void TryInitialize()
     {
+        //get available devices with characteristics
         List<InputDevice> devices = new List<InputDevice>();
         InputDevices.GetDevicesWithCharacteristics(characteristic, devices);
 
@@ -37,6 +38,7 @@ public class ControllerManager : MonoBehaviour
 
     private void Update()
     {
+        //if left trigger is pressed more than halfway through, reload scene
         _leftController.TryGetFeatureValue(CommonUsages.trigger, out float force);
         if (force >= 0.5) SceneManager.LoadScene(0);
     }

@@ -466,7 +466,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 7060056988158201856, guid: 75d5189b70acd5b4ca3e1555a378f536,
     type: 3}
-  KeyTransforms:
+  keyTransforms:
   - {fileID: 1989164638}
   - {fileID: 1562891352}
   - {fileID: 1031255958}
