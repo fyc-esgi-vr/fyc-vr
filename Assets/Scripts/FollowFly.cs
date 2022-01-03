@@ -8,18 +8,12 @@ public class FollowFly : MonoBehaviour
     public Vector3 offset;
     
     private bool _flyIsMoving;
-    private Vector3 _sizeFactor;
     private Transform _transform;
+    private float _zOffset;
     private void Start()
     {
         _transform = this.gameObject.transform;
-        var followFlyScale = _transform.localScale;
-        var flyScale = fly.transform.localScale;
-        float x = followFlyScale.x / flyScale.x;
-        float y = followFlyScale.y / flyScale.y;
-        float z = followFlyScale.z / flyScale.z;
-
-        _sizeFactor = new Vector3(x, y, z);
+        _zOffset = fly.transform.position.z;
     }
 
     public void SetFlyMoving(bool val)
@@ -32,7 +26,7 @@ public class FollowFly : MonoBehaviour
     {
         //if (!_flyIsMoving) return;
         var flyTransform = fly.transform.localPosition;
-        _transform.localPosition = new Vector3(flyTransform.x * 3,flyTransform.y,(flyTransform.z* (3)) - 0.9f);
+        _transform.localPosition = new Vector3(flyTransform.x * 3,flyTransform.y,flyTransform.z - _zOffset);
         _transform.localRotation = fly.transform.localRotation;
     }
 }
