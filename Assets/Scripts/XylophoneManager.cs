@@ -40,7 +40,7 @@ public class XylophoneManager : MonoBehaviour
     }
 
     //drops a projectile on the key of the index given in parameter.
-    void PlayNote(int index, float zOffset = 0, float interval = 0.5f)
+    void PlayNote(int index, float zOffset = 0)
     {
         _positions[index] = new Vector3(_positions[index].x, _positions[index].y, zOffset);
         Instantiate(projectile, _positions[index], Quaternion.identity);
@@ -53,7 +53,8 @@ public class XylophoneManager : MonoBehaviour
         _time += Time.deltaTime;
 
         if (_time < keys.intervals[_index]) return;
-        PlayNote(keys.indexes[_index], UnityEngine.Random.Range(-2.0f, 2f));
+        float zPos = (keyTransforms[0].localScale.z / 2) - projectile.transform.localScale.z;
+        PlayNote(keys.indexes[_index], UnityEngine.Random.Range(-zPos, zPos));
         _time = 0f;
         _index++;
     }
