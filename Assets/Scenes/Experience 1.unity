@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2138677392}
-  m_IndirectSpecularColor: {r: 0.28502667, g: 0.37139323, b: 0.49600998, a: 1}
+  m_IndirectSpecularColor: {r: 0.2850269, g: 0.3713935, b: 0.49601045, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -494,8 +494,10 @@ MonoBehaviour:
     type: 3}
   characterModelPrefab: {fileID: 2703518742718467772, guid: 6ea56cab682219e418aec24e730b4fde,
     type: 3}
-  littleDimensionBotLeftBackPoint: {x: -0.5, y: 1, z: 0.25}
   realDimensionBotLeftBackPoint: {x: -1.5, y: 0, z: -1.5}
+  littleDimensionBotLeftBackPoint: {x: -0.5, y: 1, z: 0.25}
+  characterScale: {x: 0.3, y: 0.5, z: 0.3}
+  flyScale: {x: 0.1, y: 0.1, z: 0.1}
 --- !u!1 &597525405
 GameObject:
   m_ObjectHideFlags: 0
