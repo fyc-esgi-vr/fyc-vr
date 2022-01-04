@@ -38,8 +38,8 @@ public class ControllerManager : MonoBehaviour
 
     private void Update()
     {
-        //if left trigger is pressed more than halfway through, reload scene
+        //if left trigger is pressed more than halfway through, reload current scene
         _leftController.TryGetFeatureValue(CommonUsages.trigger, out float force);
-        if (force >= 0.5) SceneManager.LoadScene(0);
+        if (force >= 0.5) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
