@@ -7,11 +7,15 @@ public class XylophoneManager : MonoBehaviour
 {
     [Tooltip("Prefab used to play a note.")]
     public GameObject projectile;
+    
+    [Tooltip("Distance of the marbles to fall")]
+    public float yMarbleOffset = 2f;
+    
+    [Space]
+    
     [Tooltip("Stores the Transforms of the keys.")]
     public List<Transform> keyTransforms;
-    
-    //stores the positions without having the instance of the transform so that we can modify them
-    private List<Vector3> _positions;
+
     
     [Tooltip("Store the song to be played.\nindexes store the notes to play : 0 = Do, 1 = Re...\nIntervals store the amount to wait before playing the next key.")]
     public Key keys;
@@ -27,23 +31,15 @@ public class XylophoneManager : MonoBehaviour
         {
             Debug.LogError("The numbers of keys and intervals are not equal");
             _isValid = false;
-            return;
         }
-        _positions = new List<Vector3>();
-        //get all the positinos from the transforms of the keys
-        foreach (var transform in keyTransforms)
-        {
-            var pos = transform.position;
-            Vector3 position = new Vector3(pos.x, projectile.transform.position.y, pos.z);
-            _positions.Add(position);
-        }
+
     }
 
     //drops a projectile on the key of the index given in parameter.
     void PlayNote(int index, float zOffset = 0)
     {
-        _positions[index] = new Vector3(_positions[index].x, _positions[index].y, zOffset);
-        Instantiate(projectile, _positions[index], Quaternion.identity);
+        Vector3 spawnPoint =  new Vector3(keyTransforms[index].position.x, yMarbleOffset, zOffset);
+        Instantiate(projectile, spawnPoint, Quaternion.identity);
     }
 
     private void FixedUpdate()
