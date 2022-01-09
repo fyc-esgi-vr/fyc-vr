@@ -25,8 +25,8 @@ public class FollowFly : MonoBehaviour
     public GameObject characterModelPrefab;
     
     [Space]
-    public Vector3 realDimensionBotLeftBackPoint;
-    public Vector3 littleDimensionBotLeftBackPoint;
+    public Vector3 realDimensionCenter;
+    public Vector3 littleDimensionCenterPoint;
 
     [Space]
     public Vector3 characterScale;
@@ -42,18 +42,14 @@ public class FollowFly : MonoBehaviour
     private MeshRenderer _littleDimensionCubeMeshRenderer;
     private void Awake()
     {
-        Vector3 centerLittleDimension = new Vector3(littleDimensionBotLeftBackPoint.x + littleDimensionSize / 2,
-            littleDimensionBotLeftBackPoint.y + littleDimensionSize / 2,
-            littleDimensionBotLeftBackPoint.z + littleDimensionSize / 2);
+        CreateDimensionBox();
         
-        CreateDimensionBox(centerLittleDimension);
+        InstantiateModelInDimension(characterModelPrefab, littleDimensionCenterPoint, characterScale);
+        _fly = InstantiateModelInDimension(flyPrefab, littleDimensionCenterPoint, flyScale);
         
-        InstantiateModelInDimension(characterModelPrefab, centerLittleDimension, characterScale);
-        _fly = InstantiateModelInDimension(flyPrefab, centerLittleDimension, flyScale);
-        
-        _fly.transform.position = new Vector3(littleDimensionBotLeftBackPoint.x + littleDimensionSize / 4,
-            littleDimensionBotLeftBackPoint.y + littleDimensionSize / 2,
-            littleDimensionBotLeftBackPoint.z + littleDimensionSize / 1.25f);
+        _fly.transform.position = new Vector3(littleDimensionCenterPoint.x + littleDimensionSize / 4,
+            littleDimensionCenterPoint.y + littleDimensionSize / 4,
+            littleDimensionCenterPoint.z + littleDimensionSize / 4);
         
         _proportion = realDimensionSize / littleDimensionSize;
     }
@@ -71,10 +67,10 @@ public class FollowFly : MonoBehaviour
         return Instantiate(prefab, dimensionCenter, Quaternion.identity);
     }
     
-    private void CreateDimensionBox(Vector3 dimensionCenter)
+    private void CreateDimensionBox()
     {
         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.transform.position = dimensionCenter;
+        cube.transform.position = littleDimensionCenterPoint;
         cube.transform.localScale = new Vector3(littleDimensionSize, littleDimensionSize, littleDimensionSize);
         _littleDimensionCubeMeshRenderer = cube.GetComponent<MeshRenderer>();
         _littleDimensionCubeMeshRenderer.material = littleDimensionDefaultMat;
@@ -83,26 +79,26 @@ public class FollowFly : MonoBehaviour
     //Check if the fly is outside of the little dimension
     private bool VerifyFlyPosition(Vector3 pos)
     {
-        if (pos.x < littleDimensionBotLeftBackPoint.x ||
-            pos.x > littleDimensionBotLeftBackPoint.x + littleDimensionSize)
+        if (pos.x < littleDimensionCenterPoint.x - littleDimensionSize / 2||
+            pos.x > littleDimensionCenterPoint.x + littleDimensionSize /2)
             return false;
-        if (pos.y < littleDimensionBotLeftBackPoint.y ||
-            pos.y > littleDimensionBotLeftBackPoint.y + littleDimensionSize)
+        if (pos.y < littleDimensionCenterPoint.y - littleDimensionSize / 2||
+            pos.y > littleDimensionCenterPoint.y + littleDimensionSize / 2)
             return false;
-        if (pos.z < littleDimensionBotLeftBackPoint.z ||
-            pos.z > littleDimensionBotLeftBackPoint.z + littleDimensionSize)
+        if (pos.z < littleDimensionCenterPoint.z - littleDimensionSize / 2 ||
+            pos.z > littleDimensionCenterPoint.z + littleDimensionSize / 2)
             return false;
         return true;
     }
 
     private void MoveSoundRealDimension(Vector3 flyPos)
     {
-        var difference = new Vector3(flyPos.x - littleDimensionBotLeftBackPoint.x,
-            flyPos.y - littleDimensionBotLeftBackPoint.y, 
-            flyPos.z - littleDimensionBotLeftBackPoint.z);
-        flySoundObject.transform.position = new Vector3(realDimensionBotLeftBackPoint.x + difference.x * _proportion,
-            realDimensionBotLeftBackPoint.y + difference.y * _proportion,
-            realDimensionBotLeftBackPoint.z + difference.z * _proportion);
+        var difference = new Vector3(flyPos.x - littleDimensionCenterPoint.x,
+            flyPos.y - littleDimensionCenterPoint.y, 
+            flyPos.z - littleDimensionCenterPoint.z);
+        flySoundObject.transform.position = new Vector3(realDimensionCenter.x + difference.x * _proportion,
+            realDimensionCenter.y + difference.y * _proportion,
+            realDimensionCenter.z + difference.z * _proportion);
         flySoundObject.transform.rotation = _fly.transform.rotation;
     }
     // Update is called once per frame
