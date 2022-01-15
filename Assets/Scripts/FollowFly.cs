@@ -44,8 +44,8 @@ public class FollowFly : MonoBehaviour
     {
         CreateDimensionBox();
         
-        InstantiateModelInDimension(characterModelPrefab, littleDimensionCenterPoint, characterScale);
-        _fly = InstantiateModelInDimension(flyPrefab, littleDimensionCenterPoint, flyScale);
+        InstantiateModelInDimension(characterModelPrefab, characterScale);
+        _fly = InstantiateModelInDimension(flyPrefab, flyScale);
         
         _fly.transform.position = new Vector3(littleDimensionCenterPoint.x + littleDimensionSize / 4,
             littleDimensionCenterPoint.y + littleDimensionSize / 4,
@@ -55,7 +55,7 @@ public class FollowFly : MonoBehaviour
     }
 
     //Create prefab in the center of the little dimension with a scaled based on the little dimension.
-    private GameObject InstantiateModelInDimension(GameObject prefab, Vector3 dimensionCenter, Vector3 modelScaleInDimension)
+    private GameObject InstantiateModelInDimension(GameObject prefab, Vector3 modelScaleInDimension)
     {
         Mesh m = prefab.GetComponent<MeshFilter>().sharedMesh;
         Bounds meshBounds = m.bounds;
@@ -64,7 +64,7 @@ public class FollowFly : MonoBehaviour
         float y = littleDimensionSize / meshSize.y * modelScaleInDimension.y;
         float z = littleDimensionSize / meshSize.z * modelScaleInDimension.z;
         prefab.transform.localScale = new Vector3(x,y,z);
-        return Instantiate(prefab, dimensionCenter, Quaternion.identity);
+        return Instantiate(prefab, littleDimensionCenterPoint, Quaternion.identity);
     }
     
     private void CreateDimensionBox()
@@ -99,7 +99,6 @@ public class FollowFly : MonoBehaviour
         flySoundObject.transform.position = new Vector3(realDimensionCenter.x + difference.x * _proportion,
             realDimensionCenter.y + difference.y * _proportion,
             realDimensionCenter.z + difference.z * _proportion);
-        flySoundObject.transform.rotation = _fly.transform.rotation;
     }
     // Update is called once per frame
     private void Update()
